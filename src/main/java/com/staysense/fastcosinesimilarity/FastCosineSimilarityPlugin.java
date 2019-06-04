@@ -192,8 +192,7 @@ public final class FastCosineSimilarityPlugin extends Plugin implements ScriptPl
 
                                 score =  score / (Math.sqrt(docVectorNorm) * Math.sqrt(queryVectorNorm));
                             }
-
-                            return score;
+		            return Math.max(score,0);
                           }
                     };
                 }
