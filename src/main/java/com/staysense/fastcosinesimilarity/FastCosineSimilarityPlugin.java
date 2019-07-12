@@ -45,7 +45,7 @@ public final class FastCosineSimilarityPlugin extends Plugin implements ScriptPl
     public ScriptEngine getScriptEngine(Settings settings, Collection<ScriptContext<?>> contexts) {
         return new FastCosineSimilarityEngine();
     }
-
+  
   private static class FastCosineSimilarityEngine implements ScriptEngine {
 
     //
@@ -70,6 +70,8 @@ public final class FastCosineSimilarityPlugin extends Plugin implements ScriptPl
                 final String field;
                 //Whether this search should be cosine or dot product
                 final Boolean cosine;
+		//Whether we penalize similarity
+                final Boolean reciprocal;
                 //The query embedded vector
                 final Object vector;
                 Boolean exclude;
@@ -83,6 +85,10 @@ public final class FastCosineSimilarityPlugin extends Plugin implements ScriptPl
                     //Determine if cosine
                     final Object cosineBool = p.get("cosine");
                     cosine = cosineBool != null ? (boolean)cosineBool : true;
+
+		    //Determine if penalize similar
+		    final Object reciprocalBool = p.get("reciprocal");
+                    reciprocal = reciprocalBool != null ? (boolean)recirpocalBool : false;
 
                     //Get the field value from the query
                     field = p.get("field").toString();
@@ -191,6 +197,10 @@ public final class FastCosineSimilarityPlugin extends Plugin implements ScriptPl
                                 if (docVectorNorm == 0 || queryVectorNorm == 0) return 0d;
 
                                 score =  score / (Math.sqrt(docVectorNorm) * Math.sqrt(queryVectorNorm));
+
+ 				if(reciprocal){
+     				    score = 1/ (score + 0.00001);
+				}
                             }
 		            return Math.max(score,0);
                           }
