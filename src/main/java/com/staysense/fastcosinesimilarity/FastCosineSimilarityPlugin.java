@@ -88,7 +88,7 @@ public final class FastCosineSimilarityPlugin extends Plugin implements ScriptPl
 
 		    //Determine if penalize similar
 		    final Object reciprocalBool = p.get("reciprocal");
-                    reciprocal = reciprocalBool != null ? (boolean)recirpocalBool : false;
+                    reciprocal = reciprocalBool != null ? (boolean)reciprocalBool : false;
 
                     //Get the field value from the query
                     field = p.get("field").toString();
